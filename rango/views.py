@@ -12,4 +12,6 @@ def index(request):
 
     return render(request, 'rango/index.html', context=context_dict)
 
+
+
 # Create your views here.
