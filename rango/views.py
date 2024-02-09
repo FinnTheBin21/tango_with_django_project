@@ -19,10 +19,12 @@ def index(request):
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
-    visitor_cookie_handler(request)
 
-    context_dict['visits'] = request.session['visits']
+    visitor_cookie_handler(request)
     
+
+    
+
     return render(request, 'rango/index.html', context=context_dict)
 
 
@@ -106,13 +108,16 @@ def about(request):
     # prints out whether the method is a GET or a POST
     print(request.method)
     # prints out the user name, if no one is logged in it prints `AnonymousUser`
+    
+
+    visits = request.session['visits']
 
     print(request.user)
 
     if request.session.test_cookie_worked():
         print("TEST COOKIE WORKED!")
         request.session.delete_test_cookie()
-    return render(request, 'rango/about.html', {})
+    return render(request, 'rango/about.html', {'visits': visits})
 
 def register(request):
     # A boolean value for telling the template
@@ -234,6 +239,10 @@ def get_server_side_cookie(request, cookie, default_val=None):
     return val
 
 def visitor_cookie_handler(request):
+
+    if 'visits' not in request.session:
+        request.session['visits'] = 1
+        
     visits = int(get_server_side_cookie(request, 'visits', '1'))
     last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
     last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
