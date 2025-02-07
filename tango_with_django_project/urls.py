@@ -20,6 +20,7 @@ from rango import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    
     path('rango/', include('rango.urls')),
     #the above maps any urls starting with rango/ to be handled by rango
     path('admin/', admin.site.urls),
